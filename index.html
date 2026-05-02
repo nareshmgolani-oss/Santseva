@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Basant Seva Trust — Student Aid Registration</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #1a6b6b;
+    --teal-light: #2a9090;
+    --cream: #fdf6ec;
+    --gold: #c8882a;
+    --gold-light: #f0c060;
+    --orange: #e07030;
+    --dark: #1a2020;
+    --muted: #7a8888;
+    --success: #2d8c5a;
+    --error: #c0392b;
+    --card: #ffffff;
+    --border: #d8e8e8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--dark);
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--teal);
+    padding: 18px 20px 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--gold), var(--orange), var(--gold));
+  }
+  .header-inner {
+    max-width: 480px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .logo-circle {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--gold-light);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Tiro Devanagari Hindi', serif;
+    font-size: 22px;
+    color: var(--teal);
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .header-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    color: #fff;
+    line-height: 1.3;
+  }
+  .header-text p {
+    font-size: 11px;
+    color: var(--gold-light);
+    margin-top: 2px;
+    font-weight: 300;
+  }
+
+  /* STEPS */
+  .steps-bar {
+    background: #fff;
+    border-bottom: 2px solid var(--border);
+    padding: 12px 20px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .steps {
+    display: flex;
+    gap: 0;
+    position: relative;
+  }
+  .steps::before {
+    content: '';
+    position: absolute;
+    top: 14px; left: 14px; right: 14px;
+    height: 2px;
+    background: var(--border);
+    z-index: 0;
+  }
+  .step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    position: relative;
+    z-index: 1;
+  }
+  .step-dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--border);
+    color: var(--muted);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+  .step.active .step-dot {
+    background: var(--teal);
+    color: #fff;
+    box-shadow: 0 0 0 4px rgba(26,107,107,0.15);
+  }
+  .step.done .step-dot {
+    background: var(--success);
+    color: #fff;
+  }
+  .step.done .step-dot::before { content: '✓'; }
+  .step.done .step-num { display: none; }
+  .step-label {
+    font-size: 9px;
+    color: var(--muted);
+    text-align: center;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+  .step.active .step-label { color: var(--teal); font-weight: 600; }
+
+  /* MAIN */
+  main {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px 16px 0;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 16px rgba(26,107,107,0.08);
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+    display: none;
+  }
+  .card.active { display: block; }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--teal);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title .icon { font-size: 20px; }
+  .card-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+
+  /* UPLOAD ZONE */
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 24px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    background: var(--cream);
+  }
+  .upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--teal);
+    background: rgba(26,107,107,0.04);
+  }
+  .upload-zone input[type=file] {
+    position: absolute; inset: 0;
+    opacity: 0; cursor: pointer;
+    width: 100%; height: 100%;
+  }
+  .upload-icon { font-size: 36px; margin-bottom: 8px; }
+  .upload-zone h3 { font-size: 14px; font-weight: 600; color: var(--dark); }
+  .upload-zone p { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .upload-zone .btn-cam {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 8px 20px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    pointer-events: none;
+  }
+
+  .preview-wrap {
+    margin-top: 14px;
+    position: relative;
+    display: none;
+  }
+  .preview-wrap.show { display: block; }
+  .preview-wrap img {
+    width: 100%;
+    border-radius: 10px;
+    max-height: 220px;
+    object-fit: contain;
+    background: #f0f0f0;
+    border: 1px solid var(--border);
+  }
+  .preview-wrap .retake {
+    position: absolute;
+    top: 8px; right: 8px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 11px;
+    cursor: pointer;
+  }
+
+  /* OCR STATUS */
+  .ocr-status {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin-top: 14px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .ocr-status.scanning {
+    display: flex;
+    background: rgba(26,107,107,0.08);
+    color: var(--teal);
+  }
+  .ocr-status.done {
+    display: flex;
+    background: rgba(45,140,90,0.08);
+    color: var(--success);
+  }
+  .ocr-status.fail {
+    display: flex;
+    background: rgba(192,57,43,0.08);
+    color: var(--error);
+  }
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid var(--teal-light);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* FORM FIELDS */
+  .field-group { margin-bottom: 14px; }
+  .field-group label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .field-group label .required { color: var(--orange); }
+  .field-group input, .field-group select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--dark);
+    background: #fff;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  .field-group input:focus, .field-group select:focus {
+    outline: none;
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(26,107,107,0.1);
+  }
+  .field-group input.auto-filled {
+    border-color: var(--success);
+    background: rgba(45,140,90,0.04);
+  }
+  .auto-badge {
+    display: inline-block;
+    font-size: 9px;
+    background: var(--success);
+    color: #fff;
+    border-radius: 4px;
+    padding: 1px 6px;
+    margin-left: 6px;
+    vertical-align: middle;
+    font-weight: 600;
+  }
+
+  /* REVIEW TABLE */
+  .review-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 4px;
+  }
+  .review-table tr td {
+    padding: 9px 6px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .review-table tr td:first-child {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    width: 38%;
+  }
+  .review-table tr:last-child td { border-bottom: none; }
+
+  .review-photos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .review-photo-item {
+    text-align: center;
+  }
+  .review-photo-item img {
+    width: 100%;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .review-photo-item p {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  /* BUTTONS */
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .btn-primary {
+    background: var(--teal);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--teal-light); }
+  .btn-primary:disabled {
+    background: var(--border);
+    color: var(--muted);
+    cursor: not-allowed;
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--teal);
+    border: 1.5px solid var(--teal);
+    margin-top: 10px;
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold), var(--orange));
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(200,136,42,0.3);
+  }
+  .btn-gold:hover { filter: brightness(1.05); }
+  .btn-gold:disabled {
+    background: var(--border);
+    color: var(--muted);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  /* SUCCESS */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 30px 20px;
+  }
+  .success-screen.show { display: block; }
+  .success-circle {
+    width: 80px; height: 80px;
+    background: var(--success);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    margin: 0 auto 20px;
+    box-shadow: 0 4px 20px rgba(45,140,90,0.3);
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  @keyframes popIn {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .success-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--teal);
+    margin-bottom: 8px;
+  }
+  .success-screen p { font-size: 14px; color: var(--muted); margin-bottom: 6px; }
+  .token-badge {
+    display: inline-block;
+    background: var(--cream);
+    border: 2px solid var(--gold);
+    border-radius: 10px;
+    padding: 10px 24px;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--teal);
+    letter-spacing: 2px;
+    margin: 12px 0 20px;
+  }
+
+  /* CONFIG MODAL */
+  .config-btn {
+    position: fixed;
+    bottom: 16px; right: 16px;
+    width: 44px; height: 44px;
+    background: var(--teal);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+    z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+    padding: 20px;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: #fff;
+    border-radius: 20px 20px 16px 16px;
+    padding: 24px 20px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .modal h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--teal);
+    margin-bottom: 4px;
+  }
+  .modal p { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+  .modal .field-group label { margin-bottom: 5px; }
+  .modal input {
+    font-size: 12px;
+    padding: 10px 12px;
+    font-family: monospace;
+  }
+  .modal .help-text {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .modal .help-text a { color: var(--teal); }
+
+  .alert {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    margin-bottom: 14px;
+    display: none;
+  }
+  .alert.warn {
+    display: block;
+    background: #fff8e1;
+    border: 1px solid var(--gold);
+    color: #7a5500;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 16px 0;
+  }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-circle">स</div>
+    <div class="header-text">
+      <h1>Sant Hirdaram Swami Basant Ram Sewa Trust</h1>
+      <p>One Time Education Help — Registration</p>
+    </div>
+  </div>
+</header>
+
+<div class="steps-bar">
+  <div class="steps" id="stepsBar">
+    <div class="step active" id="stepEl1">
+      <div class="step-dot"><span class="step-num">1</span></div>
+      <div class="step-label">Mark Sheet</div>
+    </div>
+    <div class="step" id="stepEl2">
+      <div class="step-dot"><span class="step-num">2</span></div>
+      <div class="step-label">Aadhaar</div>
+    </div>
+    <div class="step" id="stepEl3">
+      <div class="step-dot"><span class="step-num">3</span></div>
+      <div class="step-label">Details</div>
+    </div>
+    <div class="step" id="stepEl4">
+      <div class="step-dot"><span class="step-num">4</span></div>
+      <div class="step-label">Review</div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <!-- STEP 1: Mark Sheet -->
+  <div class="card active" id="card1">
+    <div class="card-title"><span class="icon">📄</span> Upload Mark Sheet</div>
+    <div class="card-sub">Take a clear photo of the student's result / report card</div>
+
+    <div class="upload-zone" id="markUploadZone">
+      <input type="file" accept="image/*" capture="environment" id="markFile" onchange="handleUpload('mark', this)">
+      <div class="upload-icon">📸</div>
+      <h3>Tap to take photo</h3>
+      <p>or choose from gallery</p>
+      <span class="btn-cam">📷 Open Camera</span>
+    </div>
+
+    <div class="preview-wrap" id="markPreview">
+      <img id="markImg" src="" alt="Mark Sheet">
+      <button class="retake" onclick="retake('mark')">↺ Retake</button>
+    </div>
+
+    <div class="ocr-status" id="markOcrStatus">
+      <div class="spinner"></div>
+      <span id="markOcrMsg">Reading mark sheet...</span>
+    </div>
+
+    <div style="margin-top:20px;">
+      <button class="btn btn-primary" id="step1Next" disabled onclick="goStep(2)">Next →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: Aadhaar -->
+  <div class="card" id="card2">
+    <div class="card-title"><span class="icon">🪪</span> Upload Aadhaar Card</div>
+    <div class="card-sub">Parent or guardian's Aadhaar card (front side)</div>
+
+    <div class="upload-zone" id="aadhaarUploadZone">
+      <input type="file" accept="image/*" capture="environment" id="aadhaarFile" onchange="handleUpload('aadhaar', this)">
+      <div class="upload-icon">📸</div>
+      <h3>Tap to take photo</h3>
+      <p>or choose from gallery</p>
+      <span class="btn-cam">📷 Open Camera</span>
+    </div>
+
+    <div class="preview-wrap" id="aadhaarPreview">
+      <img id="aadhaarImg" src="" alt="Aadhaar">
+      <button class="retake" onclick="retake('aadhaar')">↺ Retake</button>
+    </div>
+
+    <div class="ocr-status" id="aadhaarOcrStatus">
+      <div class="spinner"></div>
+      <span id="aadhaarOcrMsg">Reading Aadhaar card...</span>
+    </div>
+
+    <div style="margin-top:20px;">
+      <button class="btn btn-primary" id="step2Next" disabled onclick="goStep(3)">Next →</button>
+      <button class="btn btn-secondary" onclick="goStep(1)">← Back</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Details -->
+  <div class="card" id="card3">
+    <div class="card-title"><span class="icon">✏️</span> Verify Details</div>
+    <div class="card-sub">OCR-filled fields are marked <span style="background:var(--success);color:#fff;font-size:10px;padding:1px 5px;border-radius:3px;">AUTO</span> — please correct if needed</div>
+
+    <div class="field-group">
+      <label>Student Name <span class="required">*</span> <span class="auto-badge" id="snBadge" style="display:none">AUTO</span></label>
+      <input type="text" id="studentName" placeholder="As on mark sheet">
+    </div>
+
+    <div class="row2">
+      <div class="field-group">
+        <label>Class / Standard <span class="required">*</span> <span class="auto-badge" id="clBadge" style="display:none">AUTO</span></label>
+        <input type="text" id="studentClass" placeholder="e.g. 7th">
+      </div>
+      <div class="field-group">
+        <label>Total % / Grade <span class="auto-badge" id="grBadge" style="display:none">AUTO</span></label>
+        <input type="text" id="studentGrade" placeholder="e.g. 78%">
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>School Name <span class="auto-badge" id="schBadge" style="display:none">AUTO</span></label>
+      <input type="text" id="schoolName" placeholder="Name of the school">
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field-group">
+      <label>Parent / Guardian Name <span class="required">*</span> <span class="auto-badge" id="pnBadge" style="display:none">AUTO</span></label>
+      <input type="text" id="parentName" placeholder="As on Aadhaar card">
+    </div>
+
+    <div class="row2">
+      <div class="field-group">
+        <label>Aadhaar Last 4 Digits <span class="auto-badge" id="adBadge" style="display:none">AUTO</span></label>
+        <input type="text" id="aadhaarLast4" placeholder="XXXX" maxlength="4" inputmode="numeric">
+      </div>
+      <div class="field-group">
+        <label>Mobile Number <span class="required">*</span></label>
+        <input type="tel" id="mobileNumber" placeholder="10-digit number" maxlength="10" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Staff Notes (optional)</label>
+      <input type="text" id="staffNotes" placeholder="Any additional note">
+    </div>
+
+    <div style="margin-top:20px;">
+      <button class="btn btn-primary" onclick="goReview()">Review & Submit →</button>
+      <button class="btn btn-secondary" onclick="goStep(2)">← Back</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: Review -->
+  <div class="card" id="card4">
+    <div class="card-title"><span class="icon">🔍</span> Review Before Submit</div>
+    <div class="card-sub">Please confirm all details are correct</div>
+
+    <table class="review-table" id="reviewTable"></table>
+
+    <div class="review-photos" id="reviewPhotos"></div>
+
+    <div class="divider"></div>
+
+    <div class="ocr-status" id="submitStatus">
+      <div class="spinner"></div>
+      <span>Saving to database...</span>
+    </div>
+
+    <button class="btn btn-gold" id="submitBtn" onclick="submitForm()" style="margin-top:4px;">
+      ✅ Confirm & Submit
+    </button>
+    <button class="btn btn-secondary" onclick="goStep(3)">← Edit Details</button>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-circle">✓</div>
+    <h2>Registration Complete!</h2>
+    <p>Token number for this student:</p>
+    <div class="token-badge" id="tokenDisplay">—</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:24px;">Show this number to the back office for reference</p>
+    <button class="btn btn-primary" onclick="resetForm()">📋 Register Next Student</button>
+  </div>
+
+</main>
+
+<!-- CONFIG BUTTON -->
+<button class="config-btn" onclick="openConfig()" title="Settings">⚙</button>
+
+<!-- CONFIG MODAL -->
+<div class="modal-overlay" id="configModal">
+  <div class="modal">
+    <h3>⚙ App Configuration</h3>
+    <p>Set these once. Your keys are saved locally on this device only.</p>
+
+    <div class="alert warn" id="configWarn">
+      ⚠️ API keys not configured. App will run in <strong>Demo Mode</strong> — OCR and Sheet saving will be simulated.
+    </div>
+
+    <div class="field-group">
+      <label>Gemini API Key</label>
+      <input type="password" id="cfgGemini" placeholder="AIza...">
+      <div class="help-text">
+        Get free key: <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com/app/apikey</a>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Google Sheet ID</label>
+      <input type="text" id="cfgSheetId" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms">
+      <div class="help-text">From your Sheet URL: /spreadsheets/d/<strong>[THIS PART]</strong>/edit</div>
+    </div>
+
+    <div class="field-group">
+      <label>Google Sheets API Key</label>
+      <input type="password" id="cfgSheetsKey" placeholder="AIza...">
+      <div class="help-text">
+        From <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a> → APIs → Sheets API → Credentials
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Sheet Name (tab)</label>
+      <input type="text" id="cfgSheetName" placeholder="Sheet1">
+    </div>
+
+    <button class="btn btn-primary" onclick="saveConfig()" style="margin-top:6px;">Save Configuration</button>
+    <button class="btn btn-secondary" onclick="closeConfig()">Cancel</button>
+  </div>
+</div>
+
+<script>
+// ─── STATE ───────────────────────────────────────────────
+let state = {
+  currentStep: 1,
+  markBase64: null,
+  aadhaarBase64: null,
+  markMime: 'image/jpeg',
+  aadhaarMime: 'image/jpeg',
+  ocr: {},
+  submissionCount: parseInt(localStorage.getItem('submissionCount') || '0')
+};
+
+// ─── CONFIG ──────────────────────────────────────────────
+function getCfg() {
+  return {
+    gemini: localStorage.getItem('cfg_gemini') || '',
+    sheetId: localStorage.getItem('cfg_sheetId') || '',
+    sheetsKey: localStorage.getItem('cfg_sheetsKey') || '',
+    sheetName: localStorage.getItem('cfg_sheetName') || 'Sheet1'
+  };
+}
+function openConfig() {
+  const c = getCfg();
+  document.getElementById('cfgGemini').value = c.gemini;
+  document.getElementById('cfgSheetId').value = c.sheetId;
+  document.getElementById('cfgSheetsKey').value = c.sheetsKey;
+  document.getElementById('cfgSheetName').value = c.sheetName;
+  const warn = document.getElementById('configWarn');
+  warn.style.display = (!c.gemini || !c.sheetId || !c.sheetsKey) ? 'block' : 'none';
+  document.getElementById('configModal').classList.add('show');
+}
+function closeConfig() {
+  document.getElementById('configModal').classList.remove('show');
+}
+function saveConfig() {
+  localStorage.setItem('cfg_gemini', document.getElementById('cfgGemini').value.trim());
+  localStorage.setItem('cfg_sheetId', document.getElementById('cfgSheetId').value.trim());
+  localStorage.setItem('cfg_sheetsKey', document.getElementById('cfgSheetsKey').value.trim());
+  localStorage.setItem('cfg_sheetName', document.getElementById('cfgSheetName').value.trim() || 'Sheet1');
+  closeConfig();
+  alert('✅ Configuration saved!');
+}
+
+// ─── STEPS ───────────────────────────────────────────────
+function goStep(n) {
+  document.getElementById('card' + state.currentStep).classList.remove('active');
+  document.getElementById('stepEl' + state.currentStep).classList.remove('active');
+  if (n > state.currentStep) {
+    document.getElementById('stepEl' + state.currentStep).classList.add('done');
+  } else {
+    document.getElementById('stepEl' + (state.currentStep)).classList.remove('done');
+  }
+  state.currentStep = n;
+  document.getElementById('card' + n).classList.add('active');
+  document.getElementById('stepEl' + n).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── UPLOAD ──────────────────────────────────────────────
+function handleUpload(type, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const dataUrl = e.target.result;
+    const base64 = dataUrl.split(',')[1];
+    const mime = file.type || 'image/jpeg';
+
+    if (type === 'mark') {
+      state.markBase64 = base64;
+      state.markMime = mime;
+      document.getElementById('markImg').src = dataUrl;
+      document.getElementById('markPreview').classList.add('show');
+      runOCR('mark', base64, mime);
+    } else {
+      state.aadhaarBase64 = base64;
+      state.aadhaarMime = mime;
+      document.getElementById('aadhaarImg').src = dataUrl;
+      document.getElementById('aadhaarPreview').classList.add('show');
+      runOCR('aadhaar', base64, mime);
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function retake(type) {
+  if (type === 'mark') {
+    state.markBase64 = null;
+    document.getElementById('markPreview').classList.remove('show');
+    document.getElementById('markFile').value = '';
+    document.getElementById('step1Next').disabled = true;
+    setOcrStatus('mark', 'hide');
+  } else {
+    state.aadhaarBase64 = null;
+    document.getElementById('aadhaarPreview').classList.remove('show');
+    document.getElementById('aadhaarFile').value = '';
+    document.getElementById('step2Next').disabled = true;
+    setOcrStatus('aadhaar', 'hide');
+  }
+}
+
+function setOcrStatus(type, mode, msg) {
+  const el = document.getElementById(type + 'OcrStatus');
+  el.className = 'ocr-status';
+  if (mode === 'hide') { return; }
+  el.classList.add(mode);
+  if (msg) document.getElementById(type + 'OcrMsg').textContent = msg;
+}
+
+// ─── OCR ─────────────────────────────────────────────────
+async function runOCR(type, base64, mime) {
+  setOcrStatus(type, 'scanning', type === 'mark' ? 'Reading mark sheet...' : 'Reading Aadhaar card...');
+
+  const cfg = getCfg();
+
+  if (!cfg.gemini) {
+    // DEMO MODE
+    await new Promise(r => setTimeout(r, 1800));
+    if (type === 'mark') {
+      fillMarkFields({ studentName: 'DEMO - Priya Sharma', studentClass: '7th', grade: '82%', school: 'Basant Primary School' }, true);
+      setOcrStatus('mark', 'done', '✓ Demo mode — fields pre-filled');
+      document.getElementById('step1Next').disabled = false;
+    } else {
+      fillAadhaarFields({ parentName: 'DEMO - Ramesh Sharma', aadhaarLast4: '7890' }, true);
+      setOcrStatus('aadhaar', 'done', '✓ Demo mode — fields pre-filled');
+      document.getElementById('step2Next').disabled = false;
+    }
+    return;
+  }
+
+  const prompt = type === 'mark'
+    ? `You are an OCR assistant for Indian school mark sheets. Extract ONLY these fields in JSON (no markdown):
+{"studentName":"","studentClass":"","grade":"","school":""}
+- studentName: full name of student exactly as printed
+- studentClass: class/standard (e.g. "7th", "Class 8", "Std 10")
+- grade: overall percentage or grade (e.g. "78.5%", "A+")
+- school: name of school if visible
+Return ONLY valid JSON. If a field is not found, use empty string.`
+    : `You are an OCR assistant for Indian Aadhaar cards. Extract ONLY these fields in JSON (no markdown):
+{"parentName":"","aadhaarLast4":""}
+- parentName: the name printed on the card
+- aadhaarLast4: ONLY the last 4 digits of the Aadhaar number (NEVER return the full number)
+Return ONLY valid JSON. If not found, use empty string.`;
+
+  try {
+    const proxyUrl = 'https://script.google.com/macros/s/AKfycbxLvMPAERXGR4XpVsiEEIw-kU_pa3-GqdT7R0Ahkeitsmou-jLNLuP_T8k5r2JsKJhA/exec';
+    const res = await fetch(proxyUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({
+        contents: [{
+          parts: [
+            { text: prompt },
+            { inline_data: { mime_type: mime, data: base64 } }
+          ]
+        }]
+      })
+    });
+
+    if (!res.ok) throw new Error('API error ' + res.status);
+    const raw = await res.text();
+    console.log('OCR raw response:', raw);
+    
+    let parsed = {};
+    try {
+      const data = JSON.parse(raw);
+      // Handle Gemini response format
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 
+                   data.candidates?.[0]?.content?.parts?.[0] || 
+                   raw;
+      const textStr = typeof text === 'string' ? text : JSON.stringify(text);
+      const clean = textStr.replace(/```json|```/g, '').trim();
+      // Find JSON object in the response
+      const jsonMatch = clean.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        parsed = JSON.parse(jsonMatch[0]);
+      }
+    } catch(parseErr) {
+      console.error('Parse error:', parseErr);
+    }
+
+    if (type === 'mark') {
+      fillMarkFields(parsed, false);
+      setOcrStatus('mark', 'done', '✓ Fields extracted from mark sheet');
+      document.getElementById('step1Next').disabled = false;
+    } else {
+      fillAadhaarFields(parsed, false);
+      setOcrStatus('aadhaar', 'done', '✓ Fields extracted from Aadhaar');
+      document.getElementById('step2Next').disabled = false;
+    }
+  } catch (err) {
+    console.error(err);
+    if (type === 'mark') {
+      setOcrStatus('mark', 'fail', '⚠ Error: ' + err.message.substring(0, 60));
+      document.getElementById('step1Next').disabled = false;
+    } else {
+      setOcrStatus('aadhaar', 'fail', '⚠ Error: ' + err.message.substring(0, 60));
+      document.getElementById('step2Next').disabled = false;
+    }
+  }
+}
+
+function fillMarkFields(d, isDemo) {
+  const set = (id, val, badgeId) => {
+    const el = document.getElementById(id);
+    el.value = val || '';
+    el.classList.toggle('auto-filled', !!val);
+    const badge = document.getElementById(badgeId);
+    if (badge) badge.style.display = val ? 'inline' : 'none';
+  };
+  set('studentName', d.studentName, 'snBadge');
+  set('studentClass', d.studentClass, 'clBadge');
+  set('studentGrade', d.grade, 'grBadge');
+  set('schoolName', d.school, 'schBadge');
+  Object.assign(state.ocr, d);
+}
+
+function fillAadhaarFields(d, isDemo) {
+  const set = (id, val, badgeId) => {
+    const el = document.getElementById(id);
+    el.value = val || '';
+    el.classList.toggle('auto-filled', !!val);
+    const badge = document.getElementById(badgeId);
+    if (badge) badge.style.display = val ? 'inline' : 'none';
+  };
+  set('parentName', d.parentName, 'pnBadge');
+  set('aadhaarLast4', d.aadhaarLast4, 'adBadge');
+  Object.assign(state.ocr, d);
+}
+
+// ─── REVIEW ──────────────────────────────────────────────
+function goReview() {
+  const required = ['studentName', 'studentClass', 'parentName', 'mobileNumber'];
+  for (const id of required) {
+    const val = document.getElementById(id).value.trim();
+    if (!val) {
+      document.getElementById(id).focus();
+      document.getElementById(id).style.borderColor = 'var(--error)';
+      alert('Please fill in the required field: ' + id.replace(/([A-Z])/g, ' $1'));
+      return;
+    }
+    document.getElementById(id).style.borderColor = '';
+  }
+
+  // build review
+  const rows = [
+    ['Student Name', document.getElementById('studentName').value],
+    ['Class', document.getElementById('studentClass').value],
+    ['Grade / %', document.getElementById('studentGrade').value || '—'],
+    ['School', document.getElementById('schoolName').value || '—'],
+    ['Parent Name', document.getElementById('parentName').value],
+    ['Aadhaar Last 4', document.getElementById('aadhaarLast4').value ? 'XXXX-XXXX-' + document.getElementById('aadhaarLast4').value : '—'],
+    ['Mobile', document.getElementById('mobileNumber').value],
+    ['Notes', document.getElementById('staffNotes').value || '—'],
+  ];
+
+  document.getElementById('reviewTable').innerHTML = rows.map(([k, v]) =>
+    `<tr><td>${k}</td><td><strong>${v}</strong></td></tr>`
+  ).join('');
+
+  let photos = '';
+  if (state.markBase64) photos += `<div class="review-photo-item"><img src="data:${state.markMime};base64,${state.markBase64}"><p>Mark Sheet</p></div>`;
+  if (state.aadhaarBase64) photos += `<div class="review-photo-item"><img src="data:${state.aadhaarMime};base64,${state.aadhaarBase64}"><p>Aadhaar Card</p></div>`;
+  document.getElementById('reviewPhotos').innerHTML = photos;
+
+  goStep(4);
+}
+
+// ─── SUBMIT ──────────────────────────────────────────────
+async function submitForm() {
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  const status = document.getElementById('submitStatus');
+  status.className = 'ocr-status scanning';
+  status.style.display = 'flex';
+  document.getElementById('submitStatus').querySelector('span').textContent = 'Saving to Google Sheet...';
+
+  const tokenNum = ++state.submissionCount;
+  localStorage.setItem('submissionCount', tokenNum);
+  const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
+  const rowData = [
+    timestamp,
+    'T-' + String(tokenNum).padStart(4, '0'),
+    document.getElementById('studentName').value,
+    document.getElementById('studentClass').value,
+    document.getElementById('studentGrade').value,
+    document.getElementById('schoolName').value,
+    document.getElementById('parentName').value,
+    document.getElementById('aadhaarLast4').value ? 'XXXX-XXXX-' + document.getElementById('aadhaarLast4').value : '',
+    document.getElementById('mobileNumber').value,
+    document.getElementById('staffNotes').value,
+    state.markBase64 ? '[photo attached]' : '',
+    state.aadhaarBase64 ? '[photo attached]' : '',
+  ];
+
+  const cfg = getCfg();
+  let saved = false;
+
+  if (cfg.sheetId && cfg.sheetsKey) {
+    try {
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${cfg.sheetId}/values/${encodeURIComponent(cfg.sheetName)}:append?valueInputOption=USER_ENTERED&key=${cfg.sheetsKey}`;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ values: [rowData] })
+      });
+      if (res.ok) saved = true;
+    } catch (e) {
+      console.error('Sheet save error:', e);
+    }
+  }
+
+  await new Promise(r => setTimeout(r, 800));
+  status.style.display = 'none';
+
+  // Show success
+  document.getElementById('card4').classList.remove('active');
+  document.getElementById('stepEl4').classList.add('done');
+  document.getElementById('tokenDisplay').textContent = 'T-' + String(tokenNum).padStart(4, '0');
+  document.getElementById('successScreen').classList.add('show');
+
+  if (!saved) {
+    console.log('Demo/offline — row data:', rowData);
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── RESET ───────────────────────────────────────────────
+function resetForm() {
+  state.markBase64 = null;
+  state.aadhaarBase64 = null;
+  state.ocr = {};
+
+  ['studentName','studentClass','studentGrade','schoolName','parentName','aadhaarLast4','mobileNumber','staffNotes'].forEach(id => {
+    document.getElementById(id).value = '';
+    document.getElementById(id).classList.remove('auto-filled');
+  });
+  ['snBadge','clBadge','grBadge','schBadge','pnBadge','adBadge'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+
+  document.getElementById('markPreview').classList.remove('show');
+  document.getElementById('aadhaarPreview').classList.remove('show');
+  document.getElementById('markFile').value = '';
+  document.getElementById('aadhaarFile').value = '';
+  document.getElementById('step1Next').disabled = true;
+  document.getElementById('step2Next').disabled = true;
+  setOcrStatus('mark', 'hide');
+  setOcrStatus('aadhaar', 'hide');
+
+  document.getElementById('successScreen').classList.remove('show');
+  ['stepEl1','stepEl2','stepEl3','stepEl4'].forEach(id => {
+    document.getElementById(id).classList.remove('active','done');
+  });
+  state.currentStep = 1;
+  document.getElementById('card1').classList.add('active');
+  document.getElementById('stepEl1').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── INIT ─────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  const cfg = getCfg();
+  if (!cfg.gemini || !cfg.sheetId || !cfg.sheetsKey) {
+    setTimeout(openConfig, 600);
+  }
+});
+</script>
+</body>
+</html>
